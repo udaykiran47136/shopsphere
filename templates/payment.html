@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+{% block title %}Payment — ShopSphere{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="payment-wrap">
+
+    <p class="product-category" style="margin-bottom:8px;">Checkout</p>
+    <h1 style="font-family:'Playfair Display',serif; font-size:clamp(28px,4vw,44px);">Secure Payment</h1>
+    <p style="color:var(--muted); font-size:14px; margin-top:6px; margin-bottom:32px;">
+      🔒 Your payment information is encrypted and secure.
+    </p>
+
+    <!-- Progress steps -->
+    <div class="payment-steps">
+      <div class="step active">1. Cart</div>
+      <div class="step active">2. Payment</div>
+      <div class="step">3. Confirmation</div>
+    </div>
+
+    {% if items %}
+      <form method="POST" action="{{ url_for('payment') }}">
+
+        <!-- Order review -->
+        <div class="payment-section">
+          <h3>Order Review</h3>
+          <div class="card" style="padding: 0 20px;">
+            {% for item in items %}
+              <div class="payment-item">
+                <span>{{ item.name }} <span style="color:var(--muted);">× {{ item.quantity }}</span></span>
+                <span style="font-weight:600;">${{ "%.2f"|format(item.price * item.quantity) }}</span>
+              </div>
+            {% endfor %}
+            <div class="payment-total" style="padding: 16px 0 20px;">
+              <span>Total</span>
+              <span style="color:var(--amber); font-size:22px;">${{ "%.2f"|format(total) }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Shipping -->
+        <div class="payment-section">
+          <h3>Shipping Address</h3>
+          <div class="card card-body">
+            <div class="form-row">
+              <div class="form-group" style="margin:0;">
+                <label>First name</label>
+                <input type="text" class="form-control" placeholder="John" required />
+              </div>
+              <div class="form-group" style="margin:0;">
+                <label>Last name</label>
+                <input type="text" class="form-control" placeholder="Doe" required />
+              </div>
+            </div>
+            <div class="form-group" style="margin-top:16px; margin-bottom:0;">
+              <label>Street address</label>
+              <input type="text" class="form-control" placeholder="123 Main Street" required />
+            </div>
+            <div class="form-row" style="margin-top:16px;">
+              <div class="form-group" style="margin:0;">
+                <label>City</label>
+                <input type="text" class="form-control" placeholder="New York" required />
+              </div>
+              <div class="form-group" style="margin:0;">
+                <label>ZIP / Postal code</label>
+                <input type="text" class="form-control" placeholder="10001" required />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card details -->
+        <div class="payment-section">
+          <h3>Card Details</h3>
+          <div class="card card-body">
+            <div class="form-group" style="margin-bottom:16px;">
+              <label>Card number</label>
+              <input type="text" class="form-control" placeholder="1234 5678 9012 3456"
+                     maxlength="19" id="cardNum" />
+            </div>
+            <div class="card-input-row">
+              <div class="form-group" style="margin:0;">
+                <label>Expiry date</label>
+                <input type="text" class="form-control" placeholder="MM / YY" maxlength="7" id="expiry" />
+              </div>
+              <div class="form-group" style="margin:0;">
+                <label>CVV</label>
+                <input type="text" class="form-control" placeholder="•••" maxlength="4" id="cvv" />
+              </div>
+            </div>
+            <div class="form-group" style="margin-top:16px; margin-bottom:0;">
+              <label>Name on card</label>
+              <input type="text" class="form-control" placeholder="John Doe" />
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block" style="font-size:16px; padding:14px;">
+          Pay ${{ "%.2f"|format(total) }} →
+        </button>
+        <a href="{{ url_for('cart') }}" class="btn btn-outline btn-block" style="margin-top:10px;">
+          ← Back to cart
+        </a>
+
+      </form>
+    {% else %}
+      <div class="empty-state">
+        <h3>Nothing to pay for</h3>
+        <p>Your cart is empty.</p>
+        <a href="{{ url_for('products') }}" class="btn btn-primary">Shop now →</a>
+      </div>
+    {% endif %}
+
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  // Card number formatting
+  const cardNum = document.getElementById('cardNum');
+  if (cardNum) {
+    cardNum.addEventListener('input', e => {
+      let v = e.target.value.replace(/\D/g,'').substring(0,16);
+      e.target.value = v.replace(/(.{4})/g,'$1 ').trim();
+    });
+  }
+  // Expiry formatting
+  const expiry = document.getElementById('expiry');
+  if (expiry) {
+    expiry.addEventListener('input', e => {
+      let v = e.target.value.replace(/\D/g,'').substring(0,4);
+      if (v.length >= 3) v = v.substring(0,2) + ' / ' + v.substring(2);
+      e.target.value = v;
+    });
+  }
+</script>
+{% endblock %}

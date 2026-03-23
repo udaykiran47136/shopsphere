@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block title %}Cart — ShopSphere{% endblock %}
+
+{% block content %}
+<div class="container">
+
+  <div class="cart-header fade-up">
+    <p class="product-category" style="margin-bottom:8px;">My Cart</p>
+    <h1 style="font-family:'Playfair Display',serif; font-size:clamp(32px,5vw,52px);">
+      Shopping Cart
+    </h1>
+  </div>
+
+  {% if items %}
+    <div class="cart-layout">
+
+      <!-- Items list -->
+      <div class="card fade-up" style="padding: 0;">
+        {% for item in items %}
+          <div class="cart-item">
+            <img class="cart-item-img"
+                 src="{{ item.image_url or 'https://via.placeholder.com/80?text=?' }}"
+                 alt="{{ item.name }}" />
+            <div class="cart-item-info">
+              <div class="cart-item-name">{{ item.name }}</div>
+              <div class="cart-item-qty">Qty: {{ item.quantity }}</div>
+            </div>
+            <div style="text-align:right;">
+              <div class="cart-item-price">${{ "%.2f"|format(item.price * item.quantity) }}</div>
+              <div style="color:var(--muted); font-size:12px; margin-top:2px;">${{ "%.2f"|format(item.price) }} ea.</div>
+              <form method="POST" action="{{ url_for('remove_from_cart', item_id=item.id) }}" style="margin-top:8px;">
+                <button type="submit" class="btn btn-danger btn-sm">Remove</button>
+              </form>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+
+      <!-- Summary -->
+      <div class="order-summary fade-up">
+        <h3>Order Summary</h3>
+        <div class="summary-row">
+          <span>Subtotal ({{ items | length }} item{{ 's' if items | length != 1 }})</span>
+          <span>${{ "%.2f"|format(total) }}</span>
+        </div>
+        <div class="summary-row">
+          <span>Shipping</span>
+          <span style="color:var(--success);">Free</span>
+        </div>
+        <div class="summary-total">
+          <span>Total</span>
+          <span style="color:var(--amber);">${{ "%.2f"|format(total) }}</span>
+        </div>
+        <a href="{{ url_for('payment') }}" class="btn btn-primary btn-block" style="margin-top:24px;">
+          Proceed to Payment →
+        </a>
+        <a href="{{ url_for('products') }}" class="btn btn-outline btn-block" style="margin-top:10px;">
+          Continue Shopping
+        </a>
+      </div>
+
+    </div>
+
+  {% else %}
+    <div class="empty-state fade-up">
+      <svg width="64" height="64" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="color:var(--muted);">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+          d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
+      </svg>
+      <h3>Your cart is empty</h3>
+      <p>Add some products and come back here to checkout.</p>
+      <a href="{{ url_for('products') }}" class="btn btn-primary">Shop now →</a>
+    </div>
+  {% endif %}
+
+</div>
+{% endblock %}

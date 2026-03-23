@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}ShopSphere{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  {% block head %}{% endblock %}
+</head>
+<body>
+
+  <!-- ── Navbar ──────────────────────────────────────── -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="{{ url_for('index') }}" class="nav-brand">Shop<span>Sphere</span></a>
+
+      <div class="nav-links">
+        <a href="{{ url_for('products') }}" {% if request.endpoint == 'products' %}class="active"{% endif %}>Products</a>
+
+        {% if session.get('user_id') %}
+          <a href="{{ url_for('dashboard') }}" {% if request.endpoint == 'dashboard' %}class="active"{% endif %}>Dashboard</a>
+          {% if session.get('is_admin') %}
+            <a href="{{ url_for('admin') }}" {% if request.endpoint == 'admin' %}class="active"{% endif %}>Admin</a>
+          {% endif %}
+          <a href="{{ url_for('cart') }}" class="nav-cart {% if request.endpoint == 'cart' %}active{% endif %}">
+            🛒 Cart
+          </a>
+          <a href="{{ url_for('logout') }}" class="btn btn-outline btn-sm">Log out</a>
+        {% else %}
+          <a href="{{ url_for('login') }}" {% if request.endpoint == 'login' %}class="active"{% endif %}>Login</a>
+          <a href="{{ url_for('register') }}" class="btn btn-primary btn-sm">Sign up</a>
+        {% endif %}
+      </div>
+    </div>
+  </nav>
+
+  <!-- ── Flash Messages ──────────────────────────────── -->
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="flash-container" id="flashContainer">
+        {% for category, message in messages %}
+          <div class="flash {{ category }}" onclick="this.remove()">{{ message }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  <!-- ── Page Content ────────────────────────────────── -->
+  <main class="page-wrap">
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- ── Footer ──────────────────────────────────────── -->
+  <footer class="footer">
+    <div class="container">
+      <p>© 2024 <a href="{{ url_for('index') }}">ShopSphere</a> — Crafted with care</p>
+    </div>
+  </footer>
+
+  <script>
+    // Auto-dismiss flash messages after 4s
+    setTimeout(() => {
+      document.querySelectorAll('.flash').forEach(el => {
+        el.style.transition = 'opacity 0.4s ease';
+        el.style.opacity = '0';
+        setTimeout(() => el.remove(), 400);
+      });
+    }, 4000);
+  </script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

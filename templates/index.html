@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% block title %}ShopSphere — Curated Commerce{% endblock %}
+
+{% block content %}
+<div class="container">
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-content fade-up">
+      <p class="hero-eyebrow">New collection 2024</p>
+      <h1>Elevate Your <em>Everyday</em> Style</h1>
+      <p>Curated products that blend form and function. Discover pieces designed to last a lifetime.</p>
+      <div class="hero-actions">
+        <a href="{{ url_for('products') }}" class="btn btn-primary">Shop Now →</a>
+        {% if not session.get('user_id') %}
+          <a href="{{ url_for('register') }}" class="btn btn-outline">Create account</a>
+        {% endif %}
+      </div>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <div class="stat-num">2,400+</div>
+        <div class="stat-label">Happy customers</div>
+      </div>
+      <div>
+        <div class="stat-num">120+</div>
+        <div class="stat-label">Curated products</div>
+      </div>
+      <div>
+        <div class="stat-num">4.9★</div>
+        <div class="stat-label">Average rating</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Products -->
+  <section style="padding-bottom: 80px;">
+    <div class="section-heading">
+      <h2>Featured Products</h2>
+      <div class="line"></div>
+      <a href="{{ url_for('products') }}" style="font-size:14px; color:var(--muted); white-space:nowrap;">View all →</a>
+    </div>
+
+    {% if products %}
+      <div class="grid-3">
+        {% for product in products %}
+          <article class="card product-card fade-up">
+            <div class="product-img-wrap">
+              <img src="{{ product.image_url or 'https://via.placeholder.com/400x300?text=No+Image' }}"
+                   alt="{{ product.name }}" loading="lazy" />
+            </div>
+            <div class="product-info">
+              <span class="product-category">{{ product.category }}</span>
+              <h3 class="product-name">{{ product.name }}</h3>
+              <p class="product-desc">{{ product.description }}</p>
+              <div class="product-footer">
+                <span class="product-price">${{ "%.2f"|format(product.price) }}</span>
+                {% if session.get('user_id') %}
+                  <form method="POST" action="{{ url_for('add_to_cart', product_id=product.id) }}">
+                    <button type="submit" class="btn btn-primary btn-sm">Add to cart</button>
+                  </form>
+                {% else %}
+                  <a href="{{ url_for('login') }}" class="btn btn-outline btn-sm">Login to buy</a>
+                {% endif %}
+              </div>
+            </div>
+          </article>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="empty-state">
+        <h3>No products yet</h3>
+        <p>Check back soon for new arrivals.</p>
+      </div>
+    {% endif %}
+  </section>
+
+</div>
+{% endblock %}

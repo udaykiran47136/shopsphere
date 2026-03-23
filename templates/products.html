@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block title %}Products — ShopSphere{% endblock %}
+
+{% block content %}
+<div class="container">
+
+  <div class="products-header fade-up">
+    <p class="product-category" style="margin-bottom:8px;">Catalogue</p>
+    <h1 style="font-family:'Playfair Display',serif; font-size:clamp(32px,5vw,56px);">
+      {% if selected %}{{ selected }}{% else %}All Products{% endif %}
+    </h1>
+  </div>
+
+  <!-- Category filters -->
+  <div class="filter-bar fade-up">
+    <a href="{{ url_for('products') }}"
+       class="filter-btn {% if not selected %}active{% endif %}">All</a>
+    {% for cat in categories %}
+      <a href="{{ url_for('products', category=cat.category) }}"
+         class="filter-btn {% if selected == cat.category %}active{% endif %}">
+        {{ cat.category }}
+      </a>
+    {% endfor %}
+  </div>
+
+  {% if products %}
+    <div class="grid-3" style="margin-bottom:80px;">
+      {% for product in products %}
+        <article class="card product-card fade-up">
+          <div class="product-img-wrap">
+            <img src="{{ product.image_url or 'https://via.placeholder.com/400x300?text=No+Image' }}"
+                 alt="{{ product.name }}" loading="lazy" />
+          </div>
+          <div class="product-info">
+            <span class="product-category">{{ product.category }}</span>
+            <h3 class="product-name">{{ product.name }}</h3>
+            <p class="product-desc">{{ product.description }}</p>
+            <p style="font-size:12px; color:var(--muted);">{{ product.stock }} in stock</p>
+            <div class="product-footer">
+              <span class="product-price">${{ "%.2f"|format(product.price) }}</span>
+              {% if session.get('user_id') %}
+                {% if product.stock > 0 %}
+                  <form method="POST" action="{{ url_for('add_to_cart', product_id=product.id) }}">
+                    <button type="submit" class="btn btn-primary btn-sm">Add to cart</button>
+                  </form>
+                {% else %}
+                  <span class="badge" style="background:rgba(248,113,113,0.15); color:var(--error);">Out of stock</span>
+                {% endif %}
+              {% else %}
+                <a href="{{ url_for('login') }}" class="btn btn-outline btn-sm">Login to buy</a>
+              {% endif %}
+            </div>
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="empty-state">
+      <h3>No products found</h3>
+      <p>Try a different category or check back soon.</p>
+      <a href="{{ url_for('products') }}" class="btn btn-outline">Clear filter</a>
+    </div>
+  {% endif %}
+
+</div>
+{% endblock %}
