@@ -13,9 +13,9 @@
 
 <br>
 
-### 🌐 [Live Demo → https://shopsphere-udaykiran.onrender.com](https://shopsphere-udaykiran.onrender.com)
+### 🐙 [View on GitHub → github.com/udaykiran47136/shopsphere](https://github.com/udaykiran47136/shopsphere)
 
-> ⚠️ First load may take 30–60 seconds (free tier spins down when inactive)
+### 💻 [Run Locally → See Getting Started below](#-getting-started)
 
 <br>
 
@@ -28,13 +28,12 @@
 ## 📌 Table of Contents
 
 - [About](#-about)
-- [Live Demo](#-live-demo)
 - [Features](#-features)
-- [Screenshots](#-screenshots)
 - [Tech Stack](#-tech-stack)
 - [Project Structure](#-project-structure)
 - [Getting Started](#-getting-started)
 - [Routes](#-routes)
+- [Design](#-design)
 - [Developer](#-developer)
 
 ---
@@ -45,12 +44,12 @@
 
 ---
 
-## 🌐 Live Demo
+## 🔗 Project Links
 
-| Link | Description |
-|------|-------------|
-| 🔗 [shopsphere-udaykiran.onrender.com](https://shopsphere-udaykiran.onrender.com) | Live Website |
-| 🐙 [github.com/udaykiran47136/shopsphere](https://github.com/udaykiran47136/shopsphere) | GitHub Repository |
+| Link | URL |
+|------|-----|
+| 🐙 GitHub Repository | [github.com/udaykiran47136/shopsphere](https://github.com/udaykiran47136/shopsphere) |
+| 💻 Run Locally | `python app.py` → `http://127.0.0.1:5000` |
 
 ---
 
@@ -68,22 +67,6 @@
 | 📱 **Responsive** | Works perfectly on all screen sizes |
 | 🎨 **Dark UI** | Luxury dark theme with amber gold accents |
 | ⚡ **Fast** | Lightweight SQLite database, no heavy dependencies |
-
----
-
-## 📸 Screenshots
-
-<div align="center">
-
-| 🏠 Homepage | 🛍️ Products |
-|:-----------:|:-----------:|
-| ![Home](https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=400&h=250&fit=crop) | ![Products](https://images.unsplash.com/photo-1472851294608-062f824d29cc?w=400&h=250&fit=crop) |
-
-| 🔐 Login | 📊 Dashboard |
-|:--------:|:-----------:|
-| ![Login](https://images.unsplash.com/photo-1555421689-d68471e189f2?w=400&h=250&fit=crop) | ![Dashboard](https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=250&fit=crop) |
-
-</div>
 
 ---
 
@@ -159,7 +142,7 @@ python app.py
 http://127.0.0.1:5000
 ```
 
-The database is created automatically on first run with 6 demo products! ✅
+✅ Database is created automatically on first run with 6 demo products!
 
 ---
 
@@ -174,8 +157,8 @@ The database is created automatically on first run with 6 demo products! ✅
 
 ## 📋 Routes
 
-| Route | Page | Access Level |
-|-------|------|-------------|
+| Route | Page | Access |
+|-------|------|--------|
 | `/` | Homepage | Public |
 | `/products` | Products Catalogue | Public |
 | `/register` | Create Account | Public |
@@ -183,12 +166,8 @@ The database is created automatically on first run with 6 demo products! ✅
 | `/logout` | Sign Out | Logged In |
 | `/dashboard` | User Dashboard | Logged In |
 | `/cart` | Shopping Cart | Logged In |
-| `/cart/add/<id>` | Add to Cart | Logged In |
-| `/cart/remove/<id>` | Remove from Cart | Logged In |
 | `/payment` | Checkout | Logged In |
 | `/admin` | Admin Panel | Admin Only |
-| `/admin/product/add` | Add Product | Admin Only |
-| `/admin/product/delete/<id>` | Delete Product | Admin Only |
 
 ---
 
@@ -196,13 +175,12 @@ The database is created automatically on first run with 6 demo products! ✅
 
 ```
 Theme:       Dark Luxury Editorial
-Background:  #0c0c0e (Deep charcoal)
-Accent:      #f5a623 (Amber gold)
-Text:        #e8e8ec (Off white)
-Cards:       #1a1a1e (Dark surface)
+Background:  #0c0c0e  (Deep charcoal)
+Accent:      #f5a623  (Amber gold)
+Text:        #e8e8ec  (Off white)
+Cards:       #1a1a1e  (Dark surface)
 Font 1:      Playfair Display (headings)
 Font 2:      DM Sans (body text)
-Animations:  Fade-up entrance, hover effects
 ```
 
 ---
@@ -215,19 +193,6 @@ werkzeug>=3.0.0
 ```
 
 Only **2 dependencies** — lightweight and fast!
-
----
-
-## 🔧 Configuration
-
-Edit `config.py`:
-
-```python
-class Config:
-    SECRET_KEY = "your-secret-key-here"
-    DATABASE   = "database.db"
-    DEBUG      = True
-```
 
 ---
 
@@ -254,7 +219,5 @@ This project is open source under the [MIT License](LICENSE).
 ### ⭐ If you like this project, please give it a star!
 
 **Built with ❤️ using Python Flask**
-
-![Visitor Count](https://visitor-badge.laobi.icu/badge?page_id=udaykiran47136.shopsphere)
 
 </div>
